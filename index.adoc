@@ -61,13 +61,10 @@ left to right direction
 
 actor User
 usecase readIndex
-
-package readers {
-actor Reader
 usecase readEntity
 usecase readPerson
 usecase readProduct
-}
+
 
 package writers {
 actor Writer
@@ -75,52 +72,56 @@ usecase login
 usecase createEntity
 usecase createPerson
 usecase createProduct
+usecase createTag
 usecase updateEntity
 usecase updatePerson
 usecase updateProduct
+usecase updateTag
 usecase deleteEntity
 usecase deletePerson
 usecase deleteProduct
-usecase editEntity
-usecase editPerson
-usecase editProduct
+usecase deleteTag
+usecase asociateTag
 usecase logout
 }
 
 User --> readIndex
-
-User <\|-down- Reader
-Reader --> readPerson
-Reader --> readEntity
-Reader --> readProduct
+User --> readPerson
+User --> readEntity
+User --> readProduct
 
 readPerson ..> readIndex : <<include>>
 readEntity ..> readIndex : <<include>>
 readProduct ..> readIndex : <<include>>
 
-User <\|-down- Writer
+User <|-down- Writer
 Writer --> login
 Writer --> createEntity
 Writer --> createPerson
 Writer --> createProduct
+Writer --> createTag
 Writer --> updateEntity
 Writer --> updatePerson
 Writer --> updateProduct
+Writer --> updateTag
 Writer --> deleteEntity
 Writer --> deletePerson
 Writer --> deleteProduct
+Writer --> deleteTag
+Writer --> asociateTag
 Writer --> logout
 
-createEntity ..> editPerson : <<include>>
-createPerson ..> editEntity : <<include>>
-createProduct ..> editProduct : <<include>>
-updateEntity ..> editPerson : <<include>>
-updatePerson ..> editEntity : <<include>>
-updateProduct ..> editProduct : <<include>>
+createEntity ..> readIndex : <<include>>
+createPerson ..> readIndex : <<include>>
+createProduct ..> readIndex : <<include>>
+createTag ..> readIndex : <<include>>
+updateEntity ..> readIndex : <<include>>
+updatePerson ..> readIndex : <<include>>
+updateProduct ..> readIndex : <<include>>
+updateTag ..> readIndex : <<include>>
+asociateTag ..> readIndex : <<include>>
 
-editPerson ..> readIndex : <<include>>
-editEntity ..> readIndex : <<include>>
-editProduct ..> readIndex : <<include>>
+
 ....
  
 
