@@ -43,9 +43,10 @@ class Tag{
 Product -down-> "*" Person
 Product -down-> "*" Entity
 Entity o-down-> "*" Person
-Tag --> "*" Product
-Tag --> "*" Entity
-Tag --> "*" Person
+Product --> "*" Tag
+Entity --> "*" Tag
+Person --> "*" Tag
+Tag --> "*" Tag
 
 ....
 
@@ -61,10 +62,14 @@ left to right direction
 
 actor User
 usecase readIndex
+
+package readers {
+actor Reader
 usecase readEntity
 usecase readPerson
 usecase readProduct
-
+usecase readTag
+}
 
 package writers {
 actor Writer
@@ -81,18 +86,28 @@ usecase deleteEntity
 usecase deletePerson
 usecase deleteProduct
 usecase deleteTag
+usecase editEntity
+usecase editPerson
+usecase editProduct
+usecase editTag
 usecase asociateTag
+
 usecase logout
 }
 
 User --> readIndex
-User --> readPerson
-User --> readEntity
-User --> readProduct
+
+User <|-down- Reader
+Reader --> readPerson
+Reader --> readEntity
+Reader --> readProduct
 
 readPerson ..> readIndex : <<include>>
 readEntity ..> readIndex : <<include>>
 readProduct ..> readIndex : <<include>>
+readPerson ..> readTag : <<include>>
+readEntity ..> readTag : <<include>>
+readProduct ..> readTag: <<include>>
 
 User <|-down- Writer
 Writer --> login
@@ -108,18 +123,24 @@ Writer --> deleteEntity
 Writer --> deletePerson
 Writer --> deleteProduct
 Writer --> deleteTag
-Writer --> asociateTag
 Writer --> logout
+Writer --> asociateTag
 
-createEntity ..> readIndex : <<include>>
-createPerson ..> readIndex : <<include>>
-createProduct ..> readIndex : <<include>>
-createTag ..> readIndex : <<include>>
-updateEntity ..> readIndex : <<include>>
-updatePerson ..> readIndex : <<include>>
-updateProduct ..> readIndex : <<include>>
-updateTag ..> readIndex : <<include>>
-asociateTag ..> readIndex : <<include>>
+
+
+createEntity ..> editPerson : <<include>>
+createPerson ..> editEntity : <<include>>
+createProduct ..> editProduct : <<include>>
+createTag ..> editTag : <<include>>
+updateEntity ..> editPerson : <<include>>
+updatePerson ..> editEntity : <<include>>
+updateProduct ..> editProduct : <<include>>
+updateTag ..> editTag : <<include>>
+
+editPerson ..> readIndex : <<include>>
+editEntity ..> readIndex : <<include>>
+editProduct ..> readIndex : <<include>>
+editTag ..> readIndex : <<include>>
 
 
 ....
