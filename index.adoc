@@ -144,6 +144,26 @@ editTag ..> readIndex : <<include>>
 
 
 ....
- 
 
-== Third sections
+
+== Diagramas de casos de uso
+=== Login
+
+[plantuml, loginUseCase, svg]
+....
+
+[*] --> APPLICATION_OPEN
+
+APPLICATION_OPEN -down-> State1 : System allows introduce username and password
+State1 --> State2 : User introduce username and password
+
+state c <<choice>>
+
+State2 --> c 
+c -right-> State3 : [username and password incorrect]
+State3 -up-> APPLICATION_OPEN
+c --> State4 
+State4 --> APPLICATION_CLOSED
+APPLICATION_CLOSED --> [*]
+
+....
