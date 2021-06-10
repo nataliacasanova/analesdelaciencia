@@ -304,8 +304,7 @@ State1 --> State2 : User selects create Entity option
 
 note left of State2 : Use case of edit Entity
 
-State2 --> State3 : Systems shows the created Entity
-State3 --> USER_LOGGED_END
+State2 --> USER_LOGGED_END : Systems shows the created Entity
 USER_LOGGED_END --> [*]
 ....
 
