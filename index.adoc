@@ -308,3 +308,264 @@ State2 --> State3 : Systems shows the created Entity
 State3 --> USER_LOGGED_END
 USER_LOGGED_END --> [*]
 ....
+
+==== Edit Entity
+
+[plantuml, editEntityUseCase, svg]
+
+....
+
+USER_LOGGED_START --> State1 : Systems allows edit a Entity
+State1 --> State2 : User selects edit a Entity
+State2 --> State3 : System allows introduce information about a Entity
+
+state c <<choice>>
+
+State3 --> c: User introduce information about a Entity
+
+c --> State2 : [information invalid]
+c--> State4
+State4 --> USER_LOGGED_END : Systems shows the edited Entity
+USER_LOGGED_END --> [*]
+....
+
+==== Update Entity
+
+[plantuml, updateEntityUseCase, svg]
+
+....
+
+USER_LOGGED_START --> State1 : Systems allows update a Entity
+State1 --> State2 : User selects update a Entity
+State2 -down-> State3 : System allows select the Entity to update
+
+state c <<choice>>
+
+State3 -right-> c : User selects a Entity to update
+
+note left of State4 : Use case of edit Entity
+
+c --> State4
+c-up-> State2 : [Entity to update not found]
+
+State4 --> USER_LOGGED_END : Systems shows the Entity updated
+
+USER_LOGGED_END --> [*]
+....
+
+==== Delete Entity
+
+[plantuml, deleteEntityUseCase, svg]
+
+....
+
+USER_LOGGED_START --> State1 : Systems allows delete a Entity
+State1 --> State2 : User selects delete a Entity
+State2 --> State3 : System allows select the Entity to delete
+
+state c <<choice>>
+
+
+State3 --> c : User selects a Entity to delete
+
+c -up-> State2 : [Entity to delete not found]
+c --> State5
+State5 --> USER_LOGGED_END : Systems shows the deleted Entity
+USER_LOGGED_END --> [*]
+
+....
+
+=== Product
+==== Create Product
+
+[plantuml, createProductUseCase, svg]
+
+....
+
+USER_LOGGED_START --> State1 : Systems allows create a Product
+State1 --> State2 : User selects create Product option
+
+note left of State2 : Use case of edit Product
+
+State2 --> USER_LOGGED_END : Systems shows the created Product
+USER_LOGGED_END --> [*]
+....
+
+
+==== Edit Product
+
+[plantuml, editProductUseCase, svg]
+
+....
+
+USER_LOGGED_START --> State1 : Systems allows edit a Product
+State1 --> State2 : User selects edit a Product
+State2 --> State3 : System allows introduce information about a Product
+
+state c <<choice>>
+
+State3 --> c: User introduce information about a Product
+
+c --> State2 : [information invalid]
+c--> State4
+State4 --> USER_LOGGED_END : Systems shows the edited Product
+USER_LOGGED_END --> [*]
+....
+
+==== Update Product
+
+[plantuml, updateProductUseCase, svg]
+
+....
+
+USER_LOGGED_START --> State1 : Systems allows update a Product
+State1 --> State2 : User selects update a Product
+State2 -down-> State3 : System allows select the Product to update
+
+state c <<choice>>
+
+State3 -right-> c : User selects a Product to update
+
+note left of State4 : Use case of edit Product
+
+c --> State4
+c-up-> State2 : [Product to update not found]
+
+State4 --> USER_LOGGED_END : Systems shows the Product updated
+
+USER_LOGGED_END --> [*]
+....
+
+==== Delete Product
+
+[plantuml, deleteProductUseCase, svg]
+
+....
+
+USER_LOGGED_START --> State1 : Systems allows delete a Product
+State1 --> State2 : User selects delete a Product
+State2 --> State3 : System allows select the Product to delete
+
+state c <<choice>>
+
+
+State3 --> c : User selects a Product to delete
+
+c -up-> State2 : [Product to delete not found]
+c --> State5
+State5 --> USER_LOGGED_END : Systems shows the deleted Product
+USER_LOGGED_END --> [*]
+
+....
+
+=== Tag
+==== Create Tag
+
+[plantuml, createTagUseCase, svg]
+
+....
+
+USER_LOGGED_START --> State1 : Systems allows create a Tag
+State1 --> State2 : User selects create Tag option
+
+note left of State2 : Use case of edit Tag
+
+State2 --> USER_LOGGED_END : Systems shows the created Tag
+USER_LOGGED_END --> [*]
+....
+
+
+==== Edit Tag
+
+[plantuml, editTagUseCase, svg]
+
+....
+
+USER_LOGGED_START --> State1 : Systems allows edit a Tag
+State1 --> State2 : User selects edit a Tag
+State2 --> State3 : System allows introduce information about a Tag
+
+state c <<choice>>
+
+State3 --> c: User introduce information about a Tag
+
+c -up-> State2 : [information invalid]
+c--> State4
+
+state d <<choice>>
+State4 --> d : Systems allows select a parent Tag
+d --> State5 :[User selects a parent Tag]
+State5 --> State6 : Systems allows select the parent Tag
+State6 --> State7 : User select the parent Tag
+d --> State8 : [User not select a parent Tag]
+State7 --> State8
+State8 --> USER_LOGGED_END : Systems shows the edited Tag
+
+
+USER_LOGGED_END --> [*]
+....
+
+==== Update Tag
+
+[plantuml, updateTagUseCase, svg]
+
+....
+
+USER_LOGGED_START --> State1 : Systems allows update a Tag
+State1 --> State2 : User selects update a Tag
+State2 -down-> State3 : System allows select the Tag to update
+
+state c <<choice>>
+
+State3 -right-> c : User selects a Tag to update
+
+note left of State4 : Use case of edit Tag
+
+c --> State4
+c-up-> State2 : [Tag to update not found]
+
+State4 --> USER_LOGGED_END : Systems shows the Tag updated
+
+USER_LOGGED_END --> [*]
+....
+
+==== Delete Tag
+
+[plantuml, deleteTagUseCase, svg]
+
+....
+
+USER_LOGGED_START --> State1 : Systems allows delete a Tag
+State1 --> State2 : User selects delete a Tag
+State2 --> State3 : System allows select the Tag to delete
+
+state c <<choice>>
+
+
+State3 --> c : User selects a Tag to delete
+
+c -up-> State2 : [Tag to delete not found]
+c --> State5
+State5 --> USER_LOGGED_END : Systems shows the deleted Tag
+USER_LOGGED_END --> [*]
+
+....
+
+==== Asociate Tag
+
+[plantuml, asociateTagUseCase, svg]
+
+....
+
+USER_LOGGED_START --> State1 : System allows asociate a Tag
+State1 --> State2: User select asociate a Tag
+State2--> State3: System allows select the Tag to asociate
+State3 --> State4 : User select the Tag to asociate
+State4 --> State5: System allows select the Entity/Person/Product to ascociate
+State5 --> State6: User select the Entity/Person/Product to asociate
+State6 --> State7 : System shows the asociate Tag
+
+State7 --> USER_LOGGED_END
+USER_LOGGED_END --> [*]
+
+....
