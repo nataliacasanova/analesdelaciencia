@@ -62,6 +62,9 @@ left to right direction
 
 actor User
 usecase readIndex
+usecase login
+usecase logout
+usecase register
 
 package readers {
 actor Reader
@@ -73,7 +76,6 @@ usecase readTag
 
 package writers {
 actor Writer
-usecase login
 usecase createEntity
 usecase createPerson
 usecase createProduct
@@ -91,11 +93,13 @@ usecase editPerson
 usecase editProduct
 usecase editTag
 usecase asociateTag
-
-usecase logout
 }
 
 User --> readIndex
+User --> login
+User --> logout
+User --> register
+
 
 User <|-down- Reader
 Reader --> readPerson
@@ -110,7 +114,6 @@ readEntity ..> readTag : <<include>>
 readProduct ..> readTag: <<include>>
 
 User <|-down- Writer
-Writer --> login
 Writer --> createEntity
 Writer --> createPerson
 Writer --> createProduct
@@ -123,7 +126,6 @@ Writer --> deleteEntity
 Writer --> deletePerson
 Writer --> deleteProduct
 Writer --> deleteTag
-Writer --> logout
 Writer --> asociateTag
 
 
@@ -566,5 +568,98 @@ State6 --> State7 : System shows the asociate Tag
 
 State7 --> USER_LOGGED_END
 USER_LOGGED_END --> [*]
+
+....
+
+== Analisis
+
+=== Diagrama de clases 
+[plantuml, analysisClassDiagram, svg]
+....
+
+package "model"{
+    class PersonModel {
++ name: String
++ birth: Date
++ death: Date
++ image: String
++ wiki: String 
+}
+
+class EntityModel {
++ name: String
++ creationDate: Date
++ wiki: String
+}
+
+class ProductModel {
++ name: String
++ creationDate: Date
++ wiki: String
+}
+
+class TagModel{
++ name: String
+}
+
+class UserModel{
++ email: String
++ password: String
+}
+}
+
+
+ProductModel -down-> "*" PersonModel
+ProductModel -down-> "*" EntityModel
+EntityModel o-down-> "*" PersonModel
+ProductModel --> "*" TagModel
+EntityModel --> "*" TagModel
+PersonModel --> "*" TagModel
+TagModel --> "*" TagModel
+
+package "controller"{
+
+Class readEntityController
+Class readPersonController
+Class readProductController
+Class readTagController
+
+Class createEntityController
+Class createPersonController
+Class createProductController
+Class createTagController
+Class updateEntityController
+Class updatePersonController
+Class updateProductController
+Class updateTagController
+Class deleteEntityController
+Class deletePersonController
+Class deleteProductController
+Class deleteTagController
+Class editEntityController
+Class editPersonController
+Class editProductController
+Class editTagController
+Class asociateTagController
+}
+
+package "view" {
+
+Class LoginView
+Class RegisterView
+Class HomeView
+Class EntityView
+Class PersonView
+Class ProductView
+Class EditEntityView
+Class EditProductView
+Class EditPersonView
+Class DetailPersonView
+Class DetailEntityView
+Class DetailProductView
+
+
+
+}
 
 ....
