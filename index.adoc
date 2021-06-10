@@ -145,6 +145,18 @@ editTag ..> readIndex : <<include>>
 
 ....
 
+== Diagrama de contexto
+[plantuml, contextDiagram, svg]
+....
+
+USER_NOT_LOGGED --> USER_LOGGED : login
+USER_LOGGED --> USER_NOT_LOGGED : logout
+USER_NOT_LOGGED --> USER_LOGGED : register
+USER_LOGGED --> USER_LOGGED : create / delete / update
+USER_NOT_LOGGED --> USER_NOT_LOGGED : read
+USER_LOGGED -down-> [*]
+
+....
 
 == Diagramas de casos de uso
 === Login
@@ -152,18 +164,147 @@ editTag ..> readIndex : <<include>>
 [plantuml, loginUseCase, svg]
 ....
 
-[*] --> APPLICATION_OPEN
 
-APPLICATION_OPEN -down-> State1 : System allows introduce username and password
-State1 --> State2 : User introduce username and password
+USER_NOT_LOGGED -down-> State1 : System allows introduce email and password
 
 state c <<choice>>
 
-State2 --> c 
-c -right-> State3 : [username and password incorrect]
-State3 -up-> APPLICATION_OPEN
-c --> State4 
-State4 --> APPLICATION_CLOSED
-APPLICATION_CLOSED --> [*]
+State1 --> c : User introduce email and password
+c --> USER_NOT_LOGGED : [email and password incorrect]
+c --> USER_LOGGED : [email and password correct]
 
+USER_LOGGED --> [*]
+
+....
+
+=== Logout
+
+[plantuml, logoutUseCase, svg]
+....
+USER_LOGGED -down-> State1 : System allows user make logout
+
+State1 --> USER_NOT_LOGGED : User selects logout option
+
+USER_NOT_LOGGED --> [*]
+....
+
+=== Register
+
+[plantuml, registerUseCase, svg]
+....
+
+[*] --> USER_NOT_LOGGED
+USER_NOT_LOGGED -down-> State1 : Systems allows user to register
+State1 --> State2 : User selects the register option
+State2 --> State3 : Systems allows introduce email and password
+
+state c <<choice>>
+
+State3 --> c : User introduce email and password
+c --> USER_NOT_LOGGED : [email and password not valid]
+c --> USER_LOGGED : Systems shows the registered user
+USER_LOGGED --> [*]
+
+
+....
+
+=== Person
+==== Create Person
+
+[plantuml, createPersonUseCase, svg]
+
+....
+
+
+USER_LOGGED_START --> State1 : Systems allows create a Person
+State1 --> State2 : User selects create Person option
+
+note left of State2 : Use case of edit Person
+
+State2 --> State3 : Systems shows the created Person
+State3 --> USER_LOGGED_END
+USER_LOGGED_END --> [*]
+....
+
+==== Edit Person
+
+[plantuml, editPersonUseCase, svg]
+
+....
+
+USER_LOGGED_START --> State1 : Systems allows edit a Person
+State1 --> State2 : User selects edit a Person
+State2 --> State3 : System allows introduce information about a Person
+
+state c <<choice>>
+
+State3 --> c: User introduce information about a Person
+
+c --> State2 : [information invalid]
+c--> State4
+State4 --> USER_LOGGED_END : Systems shows the edited Person
+USER_LOGGED_END --> [*]
+....
+
+==== Update Person
+
+[plantuml, updatePersonUseCase, svg]
+
+....
+
+USER_LOGGED_START --> State1 : Systems allows update a Person
+State1 --> State2 : User selects update a Person
+State2 -down-> State3 : System allows select the Person to update
+
+state c <<choice>>
+
+State3 -right-> c : User selects a Person to update
+
+note left of State4 : Use case of edit Person
+
+c --> State4
+c-up-> State2 : [Person to update not found]
+
+State4 --> USER_LOGGED_END : Systems shows the Person updated
+
+USER_LOGGED_END --> [*]
+....
+
+==== Delete Person
+
+[plantuml, deletePersonUseCase, svg]
+
+....
+
+USER_LOGGED_START --> State1 : Systems allows delete a Person
+State1 --> State2 : User selects delete a Person
+State2 --> State3 : System allows select the Person to delete
+
+state c <<choice>>
+
+
+State3 --> c : User selects a Person to delete
+
+c -up-> State2 : [Person to delete not found]
+c --> State5
+State5 --> USER_LOGGED_END : Systems shows the deleted person
+USER_LOGGED_END --> [*]
+
+....
+
+=== Entity
+==== Create Entity
+
+[plantuml, createEntityUseCase, svg]
+
+....
+
+USER_LOGGED_START --> State1 : Systems allows create a Entity
+State1 --> State2 : User selects create Entity option
+
+note left of State2 : Use case of edit Entity
+
+State2 --> State3 : Systems shows the created Entity
+State3 --> USER_LOGGED_END
+USER_LOGGED_END --> [*]
 ....
