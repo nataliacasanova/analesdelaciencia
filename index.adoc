@@ -17,36 +17,44 @@ writing simple sectionless documents consisting only of a preamble.
 [plantuml, draughtsModeloDominio, svg]
 ....
 class Person {
-+ name: String
-+ birth: Date
-+ death: Date
-+ image: String
-+ wiki: String 
++ name: string
++ surname: string;
++ birthday: string;
++ deadthDate: string;
++ description: string;
++ urlImage: string;
++ urlWiki: string
 }
 
 class Entity {
-+ name: String
-+ creationDate: Date
-+ wiki: String
++ name: string
++ creationDate: string;
++ endDate: string;
++ description: string;
++ urlImage: string;
++ urlWiki: string
 }
 
 class Product {
-+ name: String
-+ creationDate: Date
-+ wiki: String
++ name: string
++ creationDate: string;
++ endDate: string;
++ description: string;
++ urlImage: string;
++ urlWiki: string
 }
 
-class Tag{
+class Category{
 + name: String
 }
 
 Product -down-> "*" Person
 Product -down-> "*" Entity
 Entity o-down-> "*" Person
-Product --> "*" Tag
-Entity --> "*" Tag
-Person --> "*" Tag
-Tag --> "*" Tag
+Product --> "*" Category
+Entity --> "*" Category
+Person --> "*" Category
+Category --> "*" Category
 
 ....
 
@@ -65,14 +73,11 @@ usecase readIndex
 usecase login
 usecase logout
 usecase register
-
-package readers {
-actor Reader
 usecase readEntity
 usecase readPerson
 usecase readProduct
 usecase readTag
-}
+
 
 package writers {
 actor Writer
@@ -99,12 +104,9 @@ User --> readIndex
 User --> login
 User --> logout
 User --> register
-
-
-User <|-down- Reader
-Reader --> readPerson
-Reader --> readEntity
-Reader --> readProduct
+User --> readPerson
+User --> readEntity
+User --> readProduct
 
 readPerson ..> readIndex : <<include>>
 readEntity ..> readIndex : <<include>>
@@ -167,12 +169,13 @@ USER_LOGGED -down-> [*]
 ....
 
 
-USER_NOT_LOGGED -down-> State1 : System allows introduce email and password
+USER_NOT_LOGGED -down-> State1 : User request to login
 
 state c <<choice>>
 
-State1 --> c : User introduce email and password
-c --> USER_NOT_LOGGED : [email and password incorrect]
+State1 --> State2 : Systems allows introduce email and password
+State2 --> c : User introduce email and password
+c -up-> USER_NOT_LOGGED : [email and password incorrect]
 c --> USER_LOGGED : [email and password correct]
 
 USER_LOGGED --> [*]
@@ -183,9 +186,9 @@ USER_LOGGED --> [*]
 
 [plantuml, logoutUseCase, svg]
 ....
-USER_LOGGED -down-> State1 : System allows user make logout
+USER_LOGGED -down-> State1 : User request to logout
 
-State1 --> USER_NOT_LOGGED : User selects logout option
+State1 --> USER_NOT_LOGGED : Systems allows to logout
 
 USER_NOT_LOGGED --> [*]
 ....
@@ -196,15 +199,15 @@ USER_NOT_LOGGED --> [*]
 ....
 
 [*] --> USER_NOT_LOGGED
-USER_NOT_LOGGED -down-> State1 : Systems allows user to register
-State1 --> State2 : User selects the register option
-State2 --> State3 : Systems allows introduce email and password
+USER_NOT_LOGGED -down-> State1 : User request to register 
+State1 --> State2 : Systems allows to introduce name, surname, email and password
+
 
 state c <<choice>>
 
-State3 --> c : User introduce email and password
-c --> USER_NOT_LOGGED : [email and password not valid]
-c --> USER_LOGGED : Systems shows the registered user
+State2 --> c : User introduce name, surname, email and password
+c -up-> USER_NOT_LOGGED : [email exist]
+c --> USER_LOGGED 
 USER_LOGGED --> [*]
 
 
@@ -218,13 +221,12 @@ USER_LOGGED --> [*]
 ....
 
 
-USER_LOGGED_START --> State1 : Systems allows create a Person
-State1 --> State2 : User selects create Person option
+USER_LOGGED_START --> State1 : User request to create a Person
 
-note left of State2 : Use case of edit Person
 
-State2 --> State3 : Systems shows the created Person
-State3 --> USER_LOGGED_END
+note left of State1 : Use case of edit Person
+
+State1 --> USER_LOGGED_END : Systems shows the created Person
 USER_LOGGED_END --> [*]
 ....
 
@@ -234,17 +236,21 @@ USER_LOGGED_END --> [*]
 
 ....
 
-USER_LOGGED_START --> State1 : Systems allows edit a Person
-State1 --> State2 : User selects edit a Person
-State2 --> State3 : System allows introduce information about a Person
+USER_LOGGED_START --> State1 : User request to edit a Person
+State1 --> State2 : System allows introduce name, surname, birthDate, deadthDate, description, urlImage, urlWiki and categoryList
+
 
 state c <<choice>>
+state d <<choice>>
 
-State3 --> c: User introduce information about a Person
+State2 --> c :  User introduce name, surname, birthDate, deadthDate, description, urlImage, urlWiki 
 
-c --> State2 : [information invalid]
-c--> State4
-State4 --> USER_LOGGED_END : Systems shows the edited Person
+c --> d : System allows introduce a categoryList
+d --> State3 : [user select a Category]
+d --> USER_LOGGED_END 
+note left of State3 : Use case of asciate Category
+
+State3 --> USER_LOGGED_END : Systems shows the edited Person
 USER_LOGGED_END --> [*]
 ....
 
@@ -254,20 +260,19 @@ USER_LOGGED_END --> [*]
 
 ....
 
-USER_LOGGED_START --> State1 : Systems allows update a Person
-State1 --> State2 : User selects update a Person
-State2 -down-> State3 : System allows select the Person to update
+USER_LOGGED_START --> State1 : User request to update a Person
+State1 -down-> State2 : System allows select the Person to update
 
 state c <<choice>>
 
-State3 -right-> c : User selects a Person to update
+State2 -right-> c : User selects a Person to update
 
-note left of State4 : Use case of edit Person
+note left of State3 : Use case of edit Person
 
-c --> State4
+c --> State3
 c-up-> State2 : [Person to update not found]
 
-State4 --> USER_LOGGED_END : Systems shows the Person updated
+State3 --> USER_LOGGED_END : Systems shows the Person updated
 
 USER_LOGGED_END --> [*]
 ....
@@ -278,14 +283,13 @@ USER_LOGGED_END --> [*]
 
 ....
 
-USER_LOGGED_START --> State1 : Systems allows delete a Person
-State1 --> State2 : User selects delete a Person
-State2 --> State3 : System allows select the Person to delete
+USER_LOGGED_START --> State1 : User request to delete a Person
+State1 --> State2 : System allows select the Person to delete
 
 state c <<choice>>
 
 
-State3 --> c : User selects a Person to delete
+State2 --> c : User selects a Person to delete
 
 c -up-> State2 : [Person to delete not found]
 c --> State5
@@ -301,8 +305,8 @@ USER_LOGGED_END --> [*]
 
 ....
 
-USER_LOGGED_START --> State1 : Systems allows create a Entity
-State1 --> State2 : User selects create Entity option
+USER_LOGGED_START --> State1 : User request to create a Entity
+State1 --> State2 : User introduce name, surname, birthDate, deadthDate, description, urlImage, urlWiki and categoryList
 
 note left of State2 : Use case of edit Entity
 
@@ -383,8 +387,8 @@ USER_LOGGED_END --> [*]
 
 ....
 
-USER_LOGGED_START --> State1 : Systems allows create a Product
-State1 --> State2 : User selects create Product option
+USER_LOGGED_START --> State1 : User request to create a Product
+State1 --> State2 : User introduce name, surname, birthDate, deadthDate, description, urlImage, urlWiki and categoryListn
 
 note left of State2 : Use case of edit Product
 
@@ -459,112 +463,57 @@ USER_LOGGED_END --> [*]
 
 ....
 
-=== Tag
-==== Create Tag
+=== Category
+==== Create Category
 
-[plantuml, createTagUseCase, svg]
+[plantuml, creat CategoryUseCase, svg]
 
 ....
 
-USER_LOGGED_START --> State1 : Systems allows create a Tag
-State1 --> State2 : User selects create Tag option
+USER_LOGGED_START --> State1 : User request to create a Category
+State1 --> State2 : Systems allows introduce name and Paren Category 
 
-note left of State2 : Use case of edit Tag
-
-State2 --> USER_LOGGED_END : Systems shows the created Tag
+note left of State2 : Use case of edit Category
+State2 -up-> State1 : [Paren Category not exist]
+State2 --> USER_LOGGED_END : Systems shows the created Category
 USER_LOGGED_END --> [*]
 ....
 
 
-==== Edit Tag
+==== Delete Category
 
-[plantuml, editTagUseCase, svg]
-
-....
-
-USER_LOGGED_START --> State1 : Systems allows edit a Tag
-State1 --> State2 : User selects edit a Tag
-State2 --> State3 : System allows introduce information about a Tag
-
-state c <<choice>>
-
-State3 --> c: User introduce information about a Tag
-
-c -up-> State2 : [information invalid]
-c--> State4
-
-state d <<choice>>
-State4 --> d : Systems allows select a parent Tag
-d --> State5 :[User selects a parent Tag]
-State5 --> State6 : Systems allows select the parent Tag
-State6 --> State7 : User select the parent Tag
-d --> State8 : [User not select a parent Tag]
-State7 --> State8
-State8 --> USER_LOGGED_END : Systems shows the edited Tag
-
-
-USER_LOGGED_END --> [*]
-....
-
-==== Update Tag
-
-[plantuml, updateTagUseCase, svg]
+[plantuml, delet CategoryUseCase, svg]
 
 ....
 
-USER_LOGGED_START --> State1 : Systems allows update a Tag
-State1 --> State2 : User selects update a Tag
-State2 -down-> State3 : System allows select the Tag to update
+USER_LOGGED_START --> State1 : User request to delete a Category
+State1 --> State2 : System allows to select a Category to delete
 
-state c <<choice>>
-
-State3 -right-> c : User selects a Tag to update
-
-note left of State4 : Use case of edit Tag
-
-c --> State4
-c-up-> State2 : [Tag to update not found]
-
-State4 --> USER_LOGGED_END : Systems shows the Tag updated
-
-USER_LOGGED_END --> [*]
-....
-
-==== Delete Tag
-
-[plantuml, deleteTagUseCase, svg]
-
-....
-
-USER_LOGGED_START --> State1 : Systems allows delete a Tag
-State1 --> State2 : User selects delete a Tag
-State2 --> State3 : System allows select the Tag to delete
 
 state c <<choice>>
 
 
-State3 --> c : User selects a Tag to delete
+State2 --> c : User select the Category to delete
 
-c -up-> State2 : [Tag to delete not found]
-c --> State5
-State5 --> USER_LOGGED_END : Systems shows the deleted Tag
+c -up-> State2 :  Category to delete not found]
+c --> State3
+State3 --> USER_LOGGED_END : Systems shows the deleted Category
 USER_LOGGED_END --> [*]
 
 ....
 
-==== Asociate Tag
+==== Asociate Category
 
-[plantuml, asociateTagUseCase, svg]
+[plantuml, asociateCategoryUseCase, svg]
 
 ....
 
-USER_LOGGED_START --> State1 : System allows asociate a Tag
-State1 --> State2: User select asociate a Tag
-State2--> State3: System allows select the Tag to asociate
-State3 --> State4 : User select the Tag to asociate
+USER_LOGGED_START --> State1 : User request to asociate a Category
+State1 --> State2: System allow to asociate a Category
+State2--> State3: User select the Category to asociate
 State4 --> State5: System allows select the Entity/Person/Product to ascociate
 State5 --> State6: User select the Entity/Person/Product to asociate
-State6 --> State7 : System shows the asociate Tag
+State6 --> State7 : System shows the asociate Category
 
 State7 --> USER_LOGGED_END
 USER_LOGGED_END --> [*]
