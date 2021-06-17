@@ -76,7 +76,7 @@ usecase register
 usecase readEntity
 usecase readPerson
 usecase readProduct
-usecase readTag
+usecase readCategory
 
 
 package writers {
@@ -84,20 +84,20 @@ actor Writer
 usecase createEntity
 usecase createPerson
 usecase createProduct
-usecase createTag
+usecase createCategory
 usecase updateEntity
 usecase updatePerson
 usecase updateProduct
-usecase updateTag
+usecase updateCategory
 usecase deleteEntity
 usecase deletePerson
 usecase deleteProduct
-usecase deleteTag
+usecase deleteCategory
 usecase editEntity
 usecase editPerson
 usecase editProduct
-usecase editTag
-usecase asociateTag
+usecase editCategory
+usecase asociateCategory
 }
 
 User --> readIndex
@@ -111,40 +111,40 @@ User --> readProduct
 readPerson ..> readIndex : <<include>>
 readEntity ..> readIndex : <<include>>
 readProduct ..> readIndex : <<include>>
-readPerson ..> readTag : <<include>>
-readEntity ..> readTag : <<include>>
-readProduct ..> readTag: <<include>>
+readPerson ..> readCategory : <<include>>
+readEntity ..> readCategory : <<include>>
+readProduct ..> readCategory: <<include>>
 
 User <|-down- Writer
 Writer --> createEntity
 Writer --> createPerson
 Writer --> createProduct
-Writer --> createTag
+Writer --> createCategory
 Writer --> updateEntity
 Writer --> updatePerson
 Writer --> updateProduct
-Writer --> updateTag
+Writer --> updateCategory
 Writer --> deleteEntity
 Writer --> deletePerson
 Writer --> deleteProduct
-Writer --> deleteTag
-Writer --> asociateTag
+Writer --> deleteCategory
+Writer --> asociateCategory
 
 
 
 createEntity ..> editPerson : <<include>>
 createPerson ..> editEntity : <<include>>
 createProduct ..> editProduct : <<include>>
-createTag ..> editTag : <<include>>
+createCategory ..> editCategory : <<include>>
 updateEntity ..> editPerson : <<include>>
 updatePerson ..> editEntity : <<include>>
 updateProduct ..> editProduct : <<include>>
-updateTag ..> editTag : <<include>>
+updateCategory ..> editCategory : <<include>>
 
 editPerson ..> readIndex : <<include>>
 editEntity ..> readIndex : <<include>>
 editProduct ..> readIndex : <<include>>
-editTag ..> readIndex : <<include>>
+editCategory ..> readIndex : <<include>>
 
 
 ....
@@ -168,6 +168,9 @@ USER_LOGGED -down-> [*]
 [plantuml, loginUseCase, svg]
 ....
 
+state " " as State1
+state " " as State2
+
 
 USER_NOT_LOGGED -down-> State1 : User request to login
 
@@ -186,6 +189,9 @@ USER_LOGGED --> [*]
 
 [plantuml, logoutUseCase, svg]
 ....
+
+state " " as State1
+
 USER_LOGGED -down-> State1 : User request to logout
 
 State1 --> USER_NOT_LOGGED : Systems allows to logout
@@ -198,7 +204,9 @@ USER_NOT_LOGGED --> [*]
 [plantuml, registerUseCase, svg]
 ....
 
-[*] --> USER_NOT_LOGGED
+state " " as State1
+state " " as State2
+
 USER_NOT_LOGGED -down-> State1 : User request to register 
 State1 --> State2 : Systems allows to introduce name, surname, email and password
 
@@ -220,11 +228,12 @@ USER_LOGGED --> [*]
 
 ....
 
+state ":EditPersonSpecification" as State1
+state "USER_LOGGED" as USER_LOGGED_START
+state "USER_LOGGED" as USER_LOGGED_END
 
 USER_LOGGED_START --> State1 : User request to create a Person
 
-
-note left of State1 : Use case of edit Person
 
 State1 --> USER_LOGGED_END : Systems shows the created Person
 USER_LOGGED_END --> [*]
@@ -236,8 +245,14 @@ USER_LOGGED_END --> [*]
 
 ....
 
+state " " as State1
+state " " as State2
+state "USER_LOGGED" as USER_LOGGED_START
+state " :AsociateCategorySpecification" as State3
+state "USER_LOGGED" as USER_LOGGED_END
+
 USER_LOGGED_START --> State1 : User request to edit a Person
-State1 --> State2 : System allows introduce name, surname, birthDate, deadthDate, description, urlImage, urlWiki and categoryList
+State1 --> State2 : System allows introduce name, surname, birthDate, deadthDate, description, urlImage, urlWiki
 
 
 state c <<choice>>
@@ -248,7 +263,7 @@ State2 --> c :  User introduce name, surname, birthDate, deadthDate, description
 c --> d : System allows introduce a categoryList
 d --> State3 : [user select a Category]
 d --> USER_LOGGED_END 
-note left of State3 : Use case of asciate Category
+
 
 State3 --> USER_LOGGED_END : Systems shows the edited Person
 USER_LOGGED_END --> [*]
@@ -259,6 +274,11 @@ USER_LOGGED_END --> [*]
 [plantuml, updatePersonUseCase, svg]
 
 ....
+state " " as State1
+state " " as State2
+state "USER_LOGGED" as USER_LOGGED_START
+state " :EditPersonSpecification " as State3
+state "USER_LOGGED" as USER_LOGGED_END
 
 USER_LOGGED_START --> State1 : User request to update a Person
 State1 -down-> State2 : System allows select the Person to update
@@ -267,7 +287,7 @@ state c <<choice>>
 
 State2 -right-> c : User selects a Person to update
 
-note left of State3 : Use case of edit Person
+
 
 c --> State3
 c-up-> State2 : [Person to update not found]
@@ -283,17 +303,22 @@ USER_LOGGED_END --> [*]
 
 ....
 
+state " " as State1
+state " " as State2
+state "USER_LOGGED" as USER_LOGGED_START
+state " " as State3
+state "USER_LOGGED" as USER_LOGGED_END
+
 USER_LOGGED_START --> State1 : User request to delete a Person
 State1 --> State2 : System allows select the Person to delete
 
 state c <<choice>>
 
-
 State2 --> c : User selects a Person to delete
 
 c -up-> State2 : [Person to delete not found]
-c --> State5
-State5 --> USER_LOGGED_END : Systems shows the deleted person
+c --> State3
+State3 --> USER_LOGGED_END : Systems shows the deleted person
 USER_LOGGED_END --> [*]
 
 ....
@@ -305,10 +330,14 @@ USER_LOGGED_END --> [*]
 
 ....
 
+state " " as State1
+state ":EditEntitySpecification " as State2
+state "USER_LOGGED" as USER_LOGGED_START
+state "USER_LOGGED" as USER_LOGGED_END
+
 USER_LOGGED_START --> State1 : User request to create a Entity
 State1 --> State2 : User introduce name, surname, birthDate, deadthDate, description, urlImage, urlWiki and categoryList
 
-note left of State2 : Use case of edit Entity
 
 State2 --> USER_LOGGED_END : Systems shows the created Entity
 USER_LOGGED_END --> [*]
@@ -320,17 +349,31 @@ USER_LOGGED_END --> [*]
 
 ....
 
-USER_LOGGED_START --> State1 : Systems allows edit a Entity
-State1 --> State2 : User selects edit a Entity
-State2 --> State3 : System allows introduce information about a Entity
+state " " as State1
+state " " as State2
+state " :AsociateCategorySpecification" as State3
+state " :AsociateProductSpecification" as State4
+
+state "USER_LOGGED" as USER_LOGGED_START
+state "USER_LOGGED" as USER_LOGGED_END
+
+USER_LOGGED_START --> State1 : User request edit a Entity
+State1 --> State2 : System allows introduce name, surname, birthDate, deadthDate, description, urlImage, urlWiki, 
+
 
 state c <<choice>>
+state d <<choice>>
 
-State3 --> c: User introduce information about a Entity
+State2 --> c :  User introduce name, surname, birthDate, deadthDate, description, urlImage, urlWiki 
 
-c --> State2 : [information invalid]
-c--> State4
-State4 --> USER_LOGGED_END : Systems shows the edited Entity
+c --> d : System allows introduce categoryList and productList
+d --> State3 : [user select a Category ]
+d --> State4: [user select a Product]
+
+
+
+State3 -->  USER_LOGGED_END  : Systems shows the edited Person
+State4 -->  USER_LOGGED_END : Systems shows the edited Person
 USER_LOGGED_END --> [*]
 ....
 
@@ -547,7 +590,7 @@ class ProductModel {
 + wiki: String
 }
 
-class TagModel{
+class CategoryModel{
 + name: String
 }
 
@@ -561,35 +604,35 @@ class UserModel{
 ProductModel -down-> "*" PersonModel
 ProductModel -down-> "*" EntityModel
 EntityModel o-down-> "*" PersonModel
-ProductModel --> "*" TagModel
-EntityModel --> "*" TagModel
-PersonModel --> "*" TagModel
-TagModel --> "*" TagModel
+ProductModel --> "*" CategoryModel
+EntityModel --> "*" CategoryModel
+PersonModel --> "*" CategoryModel
+CategoryModel --> "*" CategoryModel
 
 package "controller"{
 
 Class readEntityController
 Class readPersonController
 Class readProductController
-Class readTagController
+Class readCategoryController
 
 Class createEntityController
 Class createPersonController
 Class createProductController
-Class createTagController
+Class createCategoryController
 Class updateEntityController
 Class updatePersonController
 Class updateProductController
-Class updateTagController
+Class updateCategoryController
 Class deleteEntityController
 Class deletePersonController
 Class deleteProductController
-Class deleteTagController
+Class deleteCategoryController
 Class editEntityController
 Class editPersonController
 Class editProductController
-Class editTagController
-Class asociateTagController
+Class editCategoryController
+Class asociateCategoryController
 }
 
 package "view" {
