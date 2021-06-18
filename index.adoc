@@ -88,7 +88,6 @@ usecase createCategory
 usecase updateEntity
 usecase updatePerson
 usecase updateProduct
-usecase updateCategory
 usecase deleteEntity
 usecase deletePerson
 usecase deleteProduct
@@ -96,8 +95,10 @@ usecase deleteCategory
 usecase editEntity
 usecase editPerson
 usecase editProduct
-usecase editCategory
 usecase asociateCategory
+usecase asociatePerson
+usecase asociateProduct
+usecase asociateEntity
 }
 
 User --> readIndex
@@ -123,28 +124,27 @@ Writer --> createCategory
 Writer --> updateEntity
 Writer --> updatePerson
 Writer --> updateProduct
-Writer --> updateCategory
 Writer --> deleteEntity
 Writer --> deletePerson
 Writer --> deleteProduct
 Writer --> deleteCategory
-Writer --> asociateCategory
 
 
 
 createEntity ..> editPerson : <<include>>
 createPerson ..> editEntity : <<include>>
 createProduct ..> editProduct : <<include>>
-createCategory ..> editCategory : <<include>>
 updateEntity ..> editPerson : <<include>>
 updatePerson ..> editEntity : <<include>>
 updateProduct ..> editProduct : <<include>>
-updateCategory ..> editCategory : <<include>>
+editEntity <.. asociateEntity: <<extends>>
+editPerson <.. asociatePerson: <<extends>>
+editProduct <.. asociateProduct: <<extends>>
+createCategory ..> asociateCategory: <<include>>
 
 editPerson ..> readIndex : <<include>>
 editEntity ..> readIndex : <<include>>
 editProduct ..> readIndex : <<include>>
-editCategory ..> readIndex : <<include>>
 
 
 ....
@@ -320,6 +320,29 @@ USER_LOGGED_END --> [*]
 
 ....
 
+==== Asociate Person
+
+[plantuml, asociatePersonUseCase, svg]
+
+....
+
+state " " as State1
+state " " as State2
+state " " as State3
+
+
+state "USER_LOGGED" as USER_LOGGED_START
+state "USER_LOGGED" as USER_LOGGED_END
+
+USER_LOGGED_START --> State1 : User request to asociate a Person
+State1 --> State2: System allow to asociate a Person
+State2--> State3: User select the Person to asociate
+
+State3 --> USER_LOGGED_END :  System shows the asociate Person
+USER_LOGGED_END --> [*]
+
+....
+
 === Entity
 ==== Create Entity
 
@@ -346,8 +369,11 @@ USER_LOGGED_END --> [*]
 state " " as State1
 state " " as State2
 state " :AsociateCategorySpecification" as State4
-state " :AsociateProductSpecification" as State5
+state " :AsociateProductSpecification" as State6
 state " " as State3
+state " " as State5
+state " " as State7
+
 
 state "USER_LOGGED" as USER_LOGGED_START
 state "USER_LOGGED" as USER_LOGGED_END
@@ -359,12 +385,20 @@ state d <<choice>>
 
 State2 --> State3 :  User introduce name, surname, birthDate, deadthDate, description, urlImage, urlWiki 
 
-State3--> d : System allows introduce categoryList and productList
+State3--> d : System allows introduce categoryList 
 d --> State4 : [user select a Category ]
-d --> State5: [user select a Product]
+State4 --> State5
+d --> State5
 
-State4 -->  USER_LOGGED_END  : Systems shows the edited Person
-State5 -->  USER_LOGGED_END : Systems shows the edited Person
+state c <<choice>>
+
+State5 --> c : System allows introduce ProducList
+c --> State6 : [user select a Product]
+State6 --> State7
+c --> State7
+
+
+State7 -->  USER_LOGGED_END  : Systems shows the edited Person
 USER_LOGGED_END --> [*]
 ....
 
@@ -419,6 +453,31 @@ c -up-> State2 : [Entity to delete not found]
 
 c --> USER_LOGGED_END : Systems shows the deleted Entity
 USER_LOGGED_END --> [*]
+
+....
+
+==== Asociate Entity
+
+[plantuml, asociateEntityUseCase, svg]
+
+....
+
+state " " as State1
+state " " as State2
+state " " as State3
+
+
+
+state "USER_LOGGED" as USER_LOGGED_START
+state "USER_LOGGED" as USER_LOGGED_END
+
+USER_LOGGED_START --> State1 : User request to asociate a Entity
+State1 --> State2: System allow to asociate a Entity
+State2--> State3: User select the Entity to asociate
+
+State3 --> USER_LOGGED_END : System shows the asociate Entity
+USER_LOGGED_END --> [*]
+
 ....
 
 === Product
@@ -449,9 +508,13 @@ USER_LOGGED_END --> [*]
 state " " as State1
 state " " as State2
 state " " as State3
-state " " as State6
+state " " as State5
+state " " as State7
+state " " as State9
 state " :AsociateCategorySpecification" as State4
-state ":AsociatePersonSpecification " as State5
+state ":AsociatePersonSpecification " as State6
+state ":AsociateEntitySpecification " as State8
+
 
 
 state "USER_LOGGED" as USER_LOGGED_START
@@ -464,16 +527,26 @@ state d <<choice>>
 
 State2 --> State3 :  User introduce name, surname, birthDate, deadthDate, description, urlImage, urlWiki 
 
-State3--> d : System allows introduce categoryList, productList and entityList
-
+State3--> d : System allows introduce categoryList 
 d --> State4 : [user select a Category ]
-d --> State5: [user select a Person]
-d --> State6: [user select a Entity]
+State4 --> State5
+d --> State5
 
-State4 -->  USER_LOGGED_END : Systems shows the edited Person
-State5 -->  USER_LOGGED_END : Systems shows the edited Person
-State6 -->  USER_LOGGED_END : Systems shows the edited Person
+state c <<choice>>
 
+State5 --> c : System allows introduce PersonList
+c --> State6 : [user select a Person]
+State6 --> State7
+c --> State7
+
+state a <<choice>>
+
+State7 --> a : System allows introduce entityList
+a --> State8 : [user select a Entity]
+State8 --> State9
+a --> State9
+
+State9 --> USER_LOGGED_END : System shows the edited Product
 USER_LOGGED_END --> [*]
 ....
 
@@ -527,6 +600,28 @@ State2 --> c : User selects a Product to delete
 c -up-> State2 : [Product to delete not found]
 c --> USER_LOGGED_END : Systems shows the deleted Product
 USER_LOGGED_END --> [*]
+....
+
+==== Asociate Product
+
+[plantuml, asociateProductUseCase, svg]
+
+....
+
+state " " as State1
+state " " as State2
+state " " as State3
+
+state "USER_LOGGED" as USER_LOGGED_START
+state "USER_LOGGED" as USER_LOGGED_END
+
+USER_LOGGED_START --> State1 : User request to asociate a Product
+State1 --> State2: System allow to asociate a Product
+State2--> State3: User select the Product to asociate
+
+State3 --> USER_LOGGED_END : System shows the asociate Product
+USER_LOGGED_END --> [*]
+
 ....
 
 === Category
@@ -584,9 +679,7 @@ USER_LOGGED_END --> [*]
 state " " as State1
 state " " as State2
 state " " as State3
-state " " as State4
-state " " as State5
-state " " as State6
+
 
 state "USER_LOGGED" as USER_LOGGED_START
 state "USER_LOGGED" as USER_LOGGED_END
@@ -594,35 +687,8 @@ state "USER_LOGGED" as USER_LOGGED_END
 USER_LOGGED_START --> State1 : User request to asociate a Category
 State1 --> State2: System allow to asociate a Category
 State2--> State3: User select the Category to asociate
-State3 --> State4: System allows select the Entity/Person/Product to ascociate with
-State4 --> State5: User select the Entity/Person/Product to asociate
-State5 --> State6 : System shows the asociate Category
 
-State6 --> USER_LOGGED_END
-USER_LOGGED_END --> [*]
-
-....
-
-==== Asociate Product
-
-[plantuml, asociateProductUseCase, svg]
-
-....
-
-state " " as State1
-state " " as State2
-state " " as State3
-state " " as State4
-
-state "USER_LOGGED" as USER_LOGGED_START
-state "USER_LOGGED" as USER_LOGGED_END
-
-USER_LOGGED_START --> State1 : User request to asociate a Product
-State1 --> State2: System allow to asociate a Product
-State2--> State3: User select the Product to asociate
-State3 --> State4 : System shows the asociate Product
-
-State4 --> USER_LOGGED_END
+State3 --> USER_LOGGED_END : System shows the asociate Category
 USER_LOGGED_END --> [*]
 
 ....
@@ -687,7 +753,6 @@ Class readEntityController
 Class readPersonController
 Class readProductController
 Class readCategoryController
-
 Class createEntityController
 Class createPersonController
 Class createProductController
@@ -695,7 +760,6 @@ Class createCategoryController
 Class updateEntityController
 Class updatePersonController
 Class updateProductController
-Class updateCategoryController
 Class deleteEntityController
 Class deletePersonController
 Class deleteProductController
@@ -703,7 +767,6 @@ Class deleteCategoryController
 Class editEntityController
 Class editPersonController
 Class editProductController
-Class editCategoryController
 Class asociateCategoryController
 Class asociateProductController
 Class asociatePersonController

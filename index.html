@@ -469,6 +469,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_edit_person">4.4.2. Edit Person</a></li>
 <li><a href="#_update_person">4.4.3. Update Person</a></li>
 <li><a href="#_delete_person">4.4.4. Delete Person</a></li>
+<li><a href="#_asociate_person">4.4.5. Asociate Person</a></li>
 </ul>
 </li>
 <li><a href="#_entity">4.5. Entity</a>
@@ -477,6 +478,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_edit_entity">4.5.2. Edit Entity</a></li>
 <li><a href="#_update_entity">4.5.3. Update Entity</a></li>
 <li><a href="#_delete_entity">4.5.4. Delete Entity</a></li>
+<li><a href="#_asociate_entity">4.5.5. Asociate Entity</a></li>
 </ul>
 </li>
 <li><a href="#_product">4.6. Product</a>
@@ -485,6 +487,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_edit_product">4.6.2. Edit Product</a></li>
 <li><a href="#_update_product">4.6.3. Update Product</a></li>
 <li><a href="#_delete_product">4.6.4. Delete Product</a></li>
+<li><a href="#_asociate_product">4.6.5. Asociate Product</a></li>
 </ul>
 </li>
 <li><a href="#_category">4.7. Category</a>
@@ -492,7 +495,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_create_category">4.7.1. Create Category</a></li>
 <li><a href="#_delete_category">4.7.2. Delete Category</a></li>
 <li><a href="#_asociate_category">4.7.3. Asociate Category</a></li>
-<li><a href="#_asociate_product">4.7.4. Asociate Product</a></li>
 </ul>
 </li>
 </ul>
@@ -533,7 +535,7 @@ writing simple sectionless documents consisting only of a preamble.</p>
 <h4 id="_actores_y_casos_de_uso">2.1.1. Actores y Casos de Uso</h4>
 <div class="imageblock">
 <div class="content">
-<img src="./img/diagramaActoresCasosUso.svg" alt="diagramaActoresCasosUso" width="928" height="1354">
+<img src="./img/diagramaActoresCasosUso.svg" alt="diagramaActoresCasosUso" width="974" height="1254">
 </div>
 </div>
 </div>
@@ -611,6 +613,14 @@ writing simple sectionless documents consisting only of a preamble.</p>
 </div>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_asociate_person">4.4.5. Asociate Person</h4>
+<div class="imageblock">
+<div class="content">
+<img src="./img/asociatePersonUseCase.svg" alt="asociatePersonUseCase" width="284" height="662">
+</div>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_entity">4.5. Entity</h3>
@@ -626,7 +636,7 @@ writing simple sectionless documents consisting only of a preamble.</p>
 <h4 id="_edit_entity">4.5.2. Edit Entity</h4>
 <div class="imageblock">
 <div class="content">
-<img src="./img/editEntityUseCase.svg" alt="editEntityUseCase" width="801" height="892">
+<img src="./img/editEntityUseCase.svg" alt="editEntityUseCase" width="757" height="1344">
 </div>
 </div>
 </div>
@@ -646,6 +656,14 @@ writing simple sectionless documents consisting only of a preamble.</p>
 </div>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_asociate_entity">4.5.5. Asociate Entity</h4>
+<div class="imageblock">
+<div class="content">
+<img src="./img/asociateEntityUseCase.svg" alt="asociateEntityUseCase" width="277" height="662">
+</div>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_product">4.6. Product</h3>
@@ -661,7 +679,7 @@ writing simple sectionless documents consisting only of a preamble.</p>
 <h4 id="_edit_product">4.6.2. Edit Product</h4>
 <div class="imageblock">
 <div class="content">
-<img src="./img/editProductUseCase.svg" alt="editProductUseCase" width="792" height="892">
+<img src="./img/editProductUseCase.svg" alt="editProductUseCase" width="655" height="1685">
 </div>
 </div>
 </div>
@@ -678,6 +696,14 @@ writing simple sectionless documents consisting only of a preamble.</p>
 <div class="imageblock">
 <div class="content">
 <img src="./img/deleteProductUseCase.svg" alt="deleteProductUseCase" width="407" height="636">
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_asociate_product">4.6.5. Asociate Product</h4>
+<div class="imageblock">
+<div class="content">
+<img src="./img/asociateProductUseCase.svg" alt="asociateProductUseCase" width="288" height="662">
 </div>
 </div>
 </div>
@@ -704,15 +730,7 @@ writing simple sectionless documents consisting only of a preamble.</p>
 <h4 id="_asociate_category">4.7.3. Asociate Category</h4>
 <div class="imageblock">
 <div class="content">
-<img src="./img/asociateCategoryUseCase.svg" alt="asociateCategoryUseCase" width="458" height="1029">
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_asociate_product">4.7.4. Asociate Product</h4>
-<div class="imageblock">
-<div class="content">
-<img src="./img/asociateProductUseCase.svg" alt="asociateProductUseCase" width="288" height="773">
+<img src="./img/asociateCategoryUseCase.svg" alt="asociateCategoryUseCase" width="295" height="662">
 </div>
 </div>
 </div>
@@ -726,7 +744,7 @@ writing simple sectionless documents consisting only of a preamble.</p>
 <h3 id="_diagrama_de_clases">5.1. Diagrama de clases</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./img/analysisClassDiagram.svg" alt="analysisClassDiagram" width="2179" height="822">
+<img src="./img/analysisClassDiagram.svg" alt="analysisClassDiagram" width="2177" height="822">
 </div>
 </div>
 </div>
@@ -736,7 +754,7 @@ writing simple sectionless documents consisting only of a preamble.</p>
 <div id="footer">
 <div id="footer-text">
 Version 0.2<br>
-Last updated 2021-06-18 10:43:23 +0200
+Last updated 2021-06-18 22:19:36 +0200
 </div>
 </div>
 </body>
