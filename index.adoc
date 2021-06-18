@@ -248,24 +248,24 @@ USER_LOGGED_END --> [*]
 state " " as State1
 state " " as State2
 state "USER_LOGGED" as USER_LOGGED_START
-state " :AsociateCategorySpecification" as State3
+state " :AsociateCategorySpecification" as State4
 state "USER_LOGGED" as USER_LOGGED_END
+state " " as State3
 
 USER_LOGGED_START --> State1 : User request to edit a Person
 State1 --> State2 : System allows introduce name, surname, birthDate, deadthDate, description, urlImage, urlWiki
 
 
-state c <<choice>>
 state d <<choice>>
 
-State2 --> c :  User introduce name, surname, birthDate, deadthDate, description, urlImage, urlWiki 
+State2 --> State3 :  User introduce name, surname, birthDate, deadthDate, description, urlImage, urlWiki 
 
-c --> d : System allows introduce a categoryList
-d --> State3 : [user select a Category]
+State3 --> d : System allows introduce a categoryList
+d --> State4 : [user select a Category]
 d --> USER_LOGGED_END 
 
 
-State3 --> USER_LOGGED_END : Systems shows the edited Person
+State4 --> USER_LOGGED_END : Systems shows the edited Person
 USER_LOGGED_END --> [*]
 ....
 
@@ -288,7 +288,6 @@ state c <<choice>>
 State2 -right-> c : User selects a Person to update
 
 
-
 c --> State3
 c-up-> State2 : [Person to update not found]
 
@@ -306,7 +305,6 @@ USER_LOGGED_END --> [*]
 state " " as State1
 state " " as State2
 state "USER_LOGGED" as USER_LOGGED_START
-state " " as State3
 state "USER_LOGGED" as USER_LOGGED_END
 
 USER_LOGGED_START --> State1 : User request to delete a Person
@@ -317,8 +315,7 @@ state c <<choice>>
 State2 --> c : User selects a Person to delete
 
 c -up-> State2 : [Person to delete not found]
-c --> State3
-State3 --> USER_LOGGED_END : Systems shows the deleted person
+c --> USER_LOGGED_END : Systems shows the deleted person
 USER_LOGGED_END --> [*]
 
 ....
@@ -330,16 +327,13 @@ USER_LOGGED_END --> [*]
 
 ....
 
-state " " as State1
-state ":EditEntitySpecification " as State2
+state ":EditEntitySpecification " as State1
 state "USER_LOGGED" as USER_LOGGED_START
 state "USER_LOGGED" as USER_LOGGED_END
 
 USER_LOGGED_START --> State1 : User request to create a Entity
-State1 --> State2 : User introduce name, surname, birthDate, deadthDate, description, urlImage, urlWiki and categoryList
 
-
-State2 --> USER_LOGGED_END : Systems shows the created Entity
+State1 --> USER_LOGGED_END : Systems shows the created Entity
 USER_LOGGED_END --> [*]
 ....
 
@@ -351,8 +345,9 @@ USER_LOGGED_END --> [*]
 
 state " " as State1
 state " " as State2
-state " :AsociateCategorySpecification" as State3
-state " :AsociateProductSpecification" as State4
+state " :AsociateCategorySpecification" as State4
+state " :AsociateProductSpecification" as State5
+state " " as State3
 
 state "USER_LOGGED" as USER_LOGGED_START
 state "USER_LOGGED" as USER_LOGGED_END
@@ -360,20 +355,16 @@ state "USER_LOGGED" as USER_LOGGED_END
 USER_LOGGED_START --> State1 : User request edit a Entity
 State1 --> State2 : System allows introduce name, surname, birthDate, deadthDate, description, urlImage, urlWiki, 
 
-
-state c <<choice>>
 state d <<choice>>
 
-State2 --> c :  User introduce name, surname, birthDate, deadthDate, description, urlImage, urlWiki 
+State2 --> State3 :  User introduce name, surname, birthDate, deadthDate, description, urlImage, urlWiki 
 
-c --> d : System allows introduce categoryList and productList
-d --> State3 : [user select a Category ]
-d --> State4: [user select a Product]
+State3--> d : System allows introduce categoryList and productList
+d --> State4 : [user select a Category ]
+d --> State5: [user select a Product]
 
-
-
-State3 -->  USER_LOGGED_END  : Systems shows the edited Person
-State4 -->  USER_LOGGED_END : Systems shows the edited Person
+State4 -->  USER_LOGGED_END  : Systems shows the edited Person
+State5 -->  USER_LOGGED_END : Systems shows the edited Person
 USER_LOGGED_END --> [*]
 ....
 
@@ -383,20 +374,24 @@ USER_LOGGED_END --> [*]
 
 ....
 
-USER_LOGGED_START --> State1 : Systems allows update a Entity
-State1 --> State2 : User selects update a Entity
-State2 -down-> State3 : System allows select the Entity to update
+state " " as State1
+state " " as State2
+state "USER_LOGGED" as USER_LOGGED_START
+state " :EditEntitySpecification " as State3
+state "USER_LOGGED" as USER_LOGGED_END
+
+USER_LOGGED_START --> State1 : User request to update a Entity
+State1 --> State2 : System allows select to update a Entity
 
 state c <<choice>>
 
-State3 -right-> c : User selects a Entity to update
+State2 -right-> c : User selects a Entity to update
 
-note left of State4 : Use case of edit Entity
 
-c --> State4
+c --> State3
 c-up-> State2 : [Entity to update not found]
 
-State4 --> USER_LOGGED_END : Systems shows the Entity updated
+State3 --> USER_LOGGED_END : Systems shows the Entity updated
 
 USER_LOGGED_END --> [*]
 ....
@@ -407,20 +402,23 @@ USER_LOGGED_END --> [*]
 
 ....
 
-USER_LOGGED_START --> State1 : Systems allows delete a Entity
-State1 --> State2 : User selects delete a Entity
-State2 --> State3 : System allows select the Entity to delete
+
+state " " as State1
+state " " as State2
+state "USER_LOGGED" as USER_LOGGED_START
+state "USER_LOGGED" as USER_LOGGED_END
+
+USER_LOGGED_START --> State1 : User request to delete a Entity
+State1 --> State2 : System allows select the Entity to delete
 
 state c <<choice>>
 
-
-State3 --> c : User selects a Entity to delete
+State2 --> c : User selects a Entity to delete
 
 c -up-> State2 : [Entity to delete not found]
-c --> State5
-State5 --> USER_LOGGED_END : Systems shows the deleted Entity
-USER_LOGGED_END --> [*]
 
+c --> USER_LOGGED_END : Systems shows the deleted Entity
+USER_LOGGED_END --> [*]
 ....
 
 === Product
@@ -430,12 +428,14 @@ USER_LOGGED_END --> [*]
 
 ....
 
+state ":EditProductSpecification" as State1
+state "USER_LOGGED" as USER_LOGGED_START
+state "USER_LOGGED" as USER_LOGGED_END
+
 USER_LOGGED_START --> State1 : User request to create a Product
-State1 --> State2 : User introduce name, surname, birthDate, deadthDate, description, urlImage, urlWiki and categoryListn
 
-note left of State2 : Use case of edit Product
 
-State2 --> USER_LOGGED_END : Systems shows the created Product
+State1 --> USER_LOGGED_END : Systems shows the created Product
 USER_LOGGED_END --> [*]
 ....
 
@@ -446,17 +446,34 @@ USER_LOGGED_END --> [*]
 
 ....
 
-USER_LOGGED_START --> State1 : Systems allows edit a Product
-State1 --> State2 : User selects edit a Product
-State2 --> State3 : System allows introduce information about a Product
+state " " as State1
+state " " as State2
+state " " as State3
+state " " as State6
+state " :AsociateCategorySpecification" as State4
+state ":AsociatePersonSpecification " as State5
 
-state c <<choice>>
 
-State3 --> c: User introduce information about a Product
+state "USER_LOGGED" as USER_LOGGED_START
+state "USER_LOGGED" as USER_LOGGED_END
 
-c --> State2 : [information invalid]
-c--> State4
-State4 --> USER_LOGGED_END : Systems shows the edited Product
+USER_LOGGED_START --> State1 : User request edit a Entity
+State1 --> State2 : System allows introduce name, surname, birthDate, deadthDate, description, urlImage, urlWiki, 
+
+state d <<choice>>
+
+State2 --> State3 :  User introduce name, surname, birthDate, deadthDate, description, urlImage, urlWiki 
+
+State3--> d : System allows introduce categoryList, productList and entityList
+
+d --> State4 : [user select a Category ]
+d --> State5: [user select a Person]
+d --> State6: [user select a Entity]
+
+State4 -->  USER_LOGGED_END : Systems shows the edited Person
+State5 -->  USER_LOGGED_END : Systems shows the edited Person
+State6 -->  USER_LOGGED_END : Systems shows the edited Person
+
 USER_LOGGED_END --> [*]
 ....
 
@@ -466,20 +483,25 @@ USER_LOGGED_END --> [*]
 
 ....
 
-USER_LOGGED_START --> State1 : Systems allows update a Product
-State1 --> State2 : User selects update a Product
-State2 -down-> State3 : System allows select the Product to update
+
+state " " as State1
+state " " as State2
+state "USER_LOGGED" as USER_LOGGED_START
+state " :EditProductSpecification " as State3
+state "USER_LOGGED" as USER_LOGGED_END
+
+USER_LOGGED_START --> State1 : User request to update a Product
+State1 -down-> State2 : System allows select the Product to update
 
 state c <<choice>>
 
-State3 -right-> c : User selects a Product to update
+State2 -right-> c : User selects a Product to update
 
-note left of State4 : Use case of edit Product
 
-c --> State4
+c --> State3
 c-up-> State2 : [Product to update not found]
 
-State4 --> USER_LOGGED_END : Systems shows the Product updated
+State3 --> USER_LOGGED_END : Systems shows the Product updated
 
 USER_LOGGED_END --> [*]
 ....
@@ -490,20 +512,21 @@ USER_LOGGED_END --> [*]
 
 ....
 
-USER_LOGGED_START --> State1 : Systems allows delete a Product
-State1 --> State2 : User selects delete a Product
-State2 --> State3 : System allows select the Product to delete
+state " " as State1
+state " " as State2
+state "USER_LOGGED" as USER_LOGGED_START
+state "USER_LOGGED" as USER_LOGGED_END
+
+USER_LOGGED_START --> State1 : User request to delete a Product
+State1 --> State2 : System allows select the Product to delete
 
 state c <<choice>>
 
-
-State3 --> c : User selects a Product to delete
+State2 --> c : User selects a Product to delete
 
 c -up-> State2 : [Product to delete not found]
-c --> State5
-State5 --> USER_LOGGED_END : Systems shows the deleted Product
+c --> USER_LOGGED_END : Systems shows the deleted Product
 USER_LOGGED_END --> [*]
-
 ....
 
 === Category
@@ -513,12 +536,14 @@ USER_LOGGED_END --> [*]
 
 ....
 
-USER_LOGGED_START --> State1 : User request to create a Category
-State1 --> State2 : Systems allows introduce name and Paren Category 
+state ":EditCategorySpecification " as State1
+state "USER_LOGGED" as USER_LOGGED_START
+state "USER_LOGGED" as USER_LOGGED_END
 
-note left of State2 : Use case of edit Category
-State2 -up-> State1 : [Paren Category not exist]
-State2 --> USER_LOGGED_END : Systems shows the created Category
+USER_LOGGED_START --> State1 : User request to create a Category
+
+
+State1 --> USER_LOGGED_END : Systems shows the created Category
 USER_LOGGED_END --> [*]
 ....
 
@@ -529,18 +554,23 @@ USER_LOGGED_END --> [*]
 
 ....
 
-USER_LOGGED_START --> State1 : User request to delete a Category
-State1 --> State2 : System allows to select a Category to delete
 
+
+state " " as State1
+state " " as State2
+state "USER_LOGGED" as USER_LOGGED_START
+state "USER_LOGGED" as USER_LOGGED_END
+
+USER_LOGGED_START --> State1 : User request to delete a Category
+State1 --> State2 : System allows select the Category to delete
 
 state c <<choice>>
 
+State2 --> c : User selects a Category to delete
 
-State2 --> c : User select the Category to delete
+c -up-> State2 : [Category to delete not found]
 
-c -up-> State2 :  Category to delete not found]
-c --> State3
-State3 --> USER_LOGGED_END : Systems shows the deleted Category
+c --> USER_LOGGED_END : Systems shows the deleted Category
 USER_LOGGED_END --> [*]
 
 ....
@@ -551,14 +581,48 @@ USER_LOGGED_END --> [*]
 
 ....
 
+state " " as State1
+state " " as State2
+state " " as State3
+state " " as State4
+state " " as State5
+state " " as State6
+
+state "USER_LOGGED" as USER_LOGGED_START
+state "USER_LOGGED" as USER_LOGGED_END
+
 USER_LOGGED_START --> State1 : User request to asociate a Category
 State1 --> State2: System allow to asociate a Category
 State2--> State3: User select the Category to asociate
-State4 --> State5: System allows select the Entity/Person/Product to ascociate
-State5 --> State6: User select the Entity/Person/Product to asociate
-State6 --> State7 : System shows the asociate Category
+State3 --> State4: System allows select the Entity/Person/Product to ascociate with
+State4 --> State5: User select the Entity/Person/Product to asociate
+State5 --> State6 : System shows the asociate Category
 
-State7 --> USER_LOGGED_END
+State6 --> USER_LOGGED_END
+USER_LOGGED_END --> [*]
+
+....
+
+==== Asociate Product
+
+[plantuml, asociateProductUseCase, svg]
+
+....
+
+state " " as State1
+state " " as State2
+state " " as State3
+state " " as State4
+
+state "USER_LOGGED" as USER_LOGGED_START
+state "USER_LOGGED" as USER_LOGGED_END
+
+USER_LOGGED_START --> State1 : User request to asociate a Product
+State1 --> State2: System allow to asociate a Product
+State2--> State3: User select the Product to asociate
+State3 --> State4 : System shows the asociate Product
+
+State4 --> USER_LOGGED_END
 USER_LOGGED_END --> [*]
 
 ....
@@ -570,24 +634,32 @@ USER_LOGGED_END --> [*]
 ....
 
 package "model"{
-    class PersonModel {
-+ name: String
-+ birth: Date
-+ death: Date
-+ image: String
-+ wiki: String 
+class PersonModel {
++ name: string
++ surname: string;
++ birthday: string;
++ deadthDate: string;
++ description: string;
++ urlImage: string;
++ urlWiki: string
 }
 
 class EntityModel {
-+ name: String
-+ creationDate: Date
-+ wiki: String
++ name: string
++ creationDate: string;
++ endDate: string;
++ description: string;
++ urlImage: string;
++ urlWiki: string
 }
 
 class ProductModel {
-+ name: String
-+ creationDate: Date
-+ wiki: String
++ name: string
++ creationDate: string;
++ endDate: string;
++ description: string;
++ urlImage: string;
++ urlWiki: string
 }
 
 class CategoryModel{
@@ -633,6 +705,9 @@ Class editPersonController
 Class editProductController
 Class editCategoryController
 Class asociateCategoryController
+Class asociateProductController
+Class asociatePersonController
+Class asociateEntityController
 }
 
 package "view" {
@@ -643,15 +718,17 @@ Class HomeView
 Class EntityView
 Class PersonView
 Class ProductView
+Class CategoryView
 Class EditEntityView
 Class EditProductView
 Class EditPersonView
 Class DetailPersonView
 Class DetailEntityView
 Class DetailProductView
-
-
-
+Class CreatePersonView
+Class CreateEntityView
+Class CreateProductView
+Class CreateCategoryView
 }
 
 ....
