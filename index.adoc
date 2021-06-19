@@ -392,13 +392,13 @@ d --> State5
 
 state c <<choice>>
 
-State5 --> c : System allows introduce ProducList
-c --> State6 : [user select a Product]
+State5 --> c : System allows introduce PersonList
+c --> State6 : [user select a Person]
 State6 --> State7
 c --> State7
 
 
-State7 -->  USER_LOGGED_END  : Systems shows the edited Person
+State7 -->  USER_LOGGED_END  : Systems shows the edited Entity
 USER_LOGGED_END --> [*]
 ....
 
@@ -541,7 +541,7 @@ c --> State7
 
 state a <<choice>>
 
-State7 --> a : System allows introduce entityList
+State7 --> a : System allows introduce EntityList
 a --> State8 : [user select a Entity]
 State8 --> State9
 a --> State9
