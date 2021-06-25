@@ -14,7 +14,7 @@ This is the optional preamble (an untitled section body). Useful for
 writing simple sectionless documents consisting only of a preamble.
 
 == Modelo Del Dominio
-[plantuml, draughtsModeloDominio, svg]
+[plantuml, draughtsModeloDominio, png]
 ....
 class Person {
 + name: string
@@ -63,7 +63,7 @@ Category --> "*" Category
 === Requisitos Funcionales
 
 ==== Actores y Casos de Uso
-[plantuml, diagramaActoresCasosUso, svg]
+[plantuml, diagramaActoresCasosUso, png]
 ....
 
 left to right direction
@@ -150,7 +150,7 @@ editProduct ..> readIndex : <<include>>
 ....
 
 == Diagrama de contexto
-[plantuml, contextDiagram, svg]
+[plantuml, contextDiagram, png]
 ....
 
 USER_NOT_LOGGED --> USER_LOGGED : login
@@ -165,7 +165,7 @@ USER_LOGGED -down-> [*]
 == Diagramas de casos de uso
 === Login
 
-[plantuml, loginUseCase, svg]
+[plantuml, loginUseCase, png]
 ....
 
 state " " as State1
@@ -187,7 +187,7 @@ USER_LOGGED --> [*]
 
 === Logout
 
-[plantuml, logoutUseCase, svg]
+[plantuml, logoutUseCase, png]
 ....
 
 state " " as State1
@@ -201,7 +201,7 @@ USER_NOT_LOGGED --> [*]
 
 === Register
 
-[plantuml, registerUseCase, svg]
+[plantuml, registerUseCase, png]
 ....
 
 state " " as State1
@@ -224,7 +224,7 @@ USER_LOGGED --> [*]
 === Person
 ==== Create Person
 
-[plantuml, createPersonUseCase, svg]
+[plantuml, createPersonUseCase, png]
 
 ....
 
@@ -241,7 +241,7 @@ USER_LOGGED_END --> [*]
 
 ==== Edit Person
 
-[plantuml, editPersonUseCase, svg]
+[plantuml, editPersonUseCase, png]
 
 ....
 
@@ -271,7 +271,7 @@ USER_LOGGED_END --> [*]
 
 ==== Update Person
 
-[plantuml, updatePersonUseCase, svg]
+[plantuml, updatePersonUseCase, png]
 
 ....
 state " " as State1
@@ -298,7 +298,7 @@ USER_LOGGED_END --> [*]
 
 ==== Delete Person
 
-[plantuml, deletePersonUseCase, svg]
+[plantuml, deletePersonUseCase, png]
 
 ....
 
@@ -322,7 +322,7 @@ USER_LOGGED_END --> [*]
 
 ==== Asociate Person
 
-[plantuml, asociatePersonUseCase, svg]
+[plantuml, asociatePersonUseCase, png]
 
 ....
 
@@ -346,7 +346,7 @@ USER_LOGGED_END --> [*]
 === Entity
 ==== Create Entity
 
-[plantuml, createEntityUseCase, svg]
+[plantuml, createEntityUseCase, png]
 
 ....
 
@@ -362,7 +362,7 @@ USER_LOGGED_END --> [*]
 
 ==== Edit Entity
 
-[plantuml, editEntityUseCase, svg]
+[plantuml, editEntityUseCase, png]
 
 ....
 
@@ -404,7 +404,7 @@ USER_LOGGED_END --> [*]
 
 ==== Update Entity
 
-[plantuml, updateEntityUseCase, svg]
+[plantuml, updateEntityUseCase, png]
 
 ....
 
@@ -432,7 +432,7 @@ USER_LOGGED_END --> [*]
 
 ==== Delete Entity
 
-[plantuml, deleteEntityUseCase, svg]
+[plantuml, deleteEntityUseCase, png]
 
 ....
 
@@ -458,7 +458,7 @@ USER_LOGGED_END --> [*]
 
 ==== Asociate Entity
 
-[plantuml, asociateEntityUseCase, svg]
+[plantuml, asociateEntityUseCase, png]
 
 ....
 
@@ -483,7 +483,7 @@ USER_LOGGED_END --> [*]
 === Product
 ==== Create Product
 
-[plantuml, createProductUseCase, svg]
+[plantuml, createProductUseCase, png]
 
 ....
 
@@ -501,7 +501,7 @@ USER_LOGGED_END --> [*]
 
 ==== Edit Product
 
-[plantuml, editProductUseCase, svg]
+[plantuml, editProductUseCase, png]
 
 ....
 
@@ -552,7 +552,7 @@ USER_LOGGED_END --> [*]
 
 ==== Update Product
 
-[plantuml, updateProductUseCase, svg]
+[plantuml, updateProductUseCase, png]
 
 ....
 
@@ -581,7 +581,7 @@ USER_LOGGED_END --> [*]
 
 ==== Delete Product
 
-[plantuml, deleteProductUseCase, svg]
+[plantuml, deleteProductUseCase, png]
 
 ....
 
@@ -604,7 +604,7 @@ USER_LOGGED_END --> [*]
 
 ==== Asociate Product
 
-[plantuml, asociateProductUseCase, svg]
+[plantuml, asociateProductUseCase, png]
 
 ....
 
@@ -627,7 +627,7 @@ USER_LOGGED_END --> [*]
 === Category
 ==== Create Category
 
-[plantuml, creat CategoryUseCase, svg]
+[plantuml, creat CategoryUseCase, png]
 
 ....
 
@@ -645,7 +645,7 @@ USER_LOGGED_END --> [*]
 
 ==== Delete Category
 
-[plantuml, delet CategoryUseCase, svg]
+[plantuml, delet CategoryUseCase, png]
 
 ....
 
