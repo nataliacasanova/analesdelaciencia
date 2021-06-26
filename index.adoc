@@ -801,6 +801,10 @@ Class CreatePersonView
 Class CreateEntityView
 Class CreateProductView
 Class CreateCategoryView
+Class DeletePersonView
+Class DeleteProductView
+Class DeleteEntityView
+Class DeleteCategoryView
 }
 
 ....
@@ -821,6 +825,20 @@ LoginView --> LoginController
 LoginController --> UserModel
 ....
 
+[plantuml, loginAnalisisCollaboration, svg]
+....
+left to right direction
+
+Class User as ":User"
+Class LoginView as ":LoginView"
+Class LoginController as ":LoginController"
+Class UserModel as ":UserModel"
+
+User --> LoginView  : "login() \n setEmail(email) \n setPassword(password)"
+LoginView --> LoginController : "login(email, password)"
+LoginController --> UserModel : "getUser(email)"
+....
+
 ==== logout
 ???
 
@@ -837,6 +855,20 @@ entity UserModel
 User --> RegisterView
 RegisterView --> RegisterController
 RegisterController --> UserModel
+....
+
+[plantuml, registerAnalisisCollaboration, svg]
+....
+left to right direction
+
+class User as ":User"
+class RegisterView as ":Registerview"
+class RegisterController as ":RegisterController"
+class UserModel as ":UserModel"
+
+User --> RegisterView : "register() \n setEmail(email, password)"
+RegisterView --> RegisterController : "register(email, password)"
+RegisterController --> UserModel : "createUser(email, password)"
 ....
 
 ==== Person
@@ -858,27 +890,27 @@ CreatePersonView --> CreatePersonController
 CreatePersonController --> EditPersonController
 EditPersonController --> AsociateCategoryController
 EditPersonController --> PersonModel
-CreatePersonController --> PersonModel
 AsociateCategoryController --> CategoryModel
 ....
 
-===== EditPerson
-[plantuml, editPersonAnalisis, svg]
+[plantuml, createPersonAnalisisCollaboration, svg]
 ....
 left to right direction
 
-actor Writer
-boundary EditPersonView
-control EditPersonController
-control AsociateCategoryController
-entity PersonModel
-entity CategoryModel
+class Writer as ":Writer"
+class CreatePersonView as ":CreatePersonView"
+class CreatePersonController as ":CreatePersonController"
+class EditPersonController as ":EditPersonController"
+class AsociateCategoryController as ":AsociateCategoryController"
+class PersonModel as ":PersonModel"
+class CategoryModel as "CategoryModel"
 
-Writer --> EditPersonView
-EditPersonView --> EditPersonController
-EditPersonController --> AsociateCategoryController
-EditPersonController --> PersonModel
-AsociateCategoryController --> CategoryModel
+Writer --> CreatePersonView : "createPerson() \n setPersonData(personData)"
+CreatePersonView --> CreatePersonController : "createPerson(personData)"
+CreatePersonController --> EditPersonController : "createPerson(personData)"
+EditPersonController --> AsociateCategoryController : "getCategory()"
+EditPersonController --> PersonModel : "createPerson(personData)"
+AsociateCategoryController --> CategoryModel : "getCategory()"
 ....
 
 ===== UpdatePerson
@@ -891,17 +923,44 @@ boundary UpdatePersonView
 control ReadPersonController
 control UpdatePersonController
 control EditPersonController
+control AsociateCategoryController
+entity CategoryModel
 entity PersonModel
 
 Writer --> UpdatePersonView
 UpdatePersonView --> ReadPersonController
 UpdatePersonView --> UpdatePersonController
 UpdatePersonController --> EditPersonController
+EditPersonController --> AsociateCategoryController
 ReadPersonController --> PersonModel
 EditPersonController --> PersonModel
+AsociateCategoryController --> CategoryModel
 ....
 
-===== DeletePersonView
+[plantuml, updatePersonAnalisisCollaborations, svg]
+....
+left to right direction
+
+class Writer as ":Writer"
+class UpdatePersonView as ":UpdatePersonView"
+class ReadPersonController as ":ReadPersonController"
+class UpdatePersonController as ":UpdatePersonController"
+class EditPersonController as ":EditPersonController"
+class AsociateCategoryController as ":AsociateCategoryController"
+class CategoryModel as ":CategoryModel"
+class PersonModel as ":PersonModel"
+
+Writer --> UpdatePersonView : "updatePerson(personId) \n setPersonData(personData)"
+UpdatePersonView --> ReadPersonController : "getPerson(personId)"
+UpdatePersonView --> UpdatePersonController : "updatePerson(personData)"
+UpdatePersonController --> EditPersonController : "updatePerson(personData)"
+EditPersonController --> AsociateCategoryController : "getCategory()"
+ReadPersonController --> PersonModel : "getPerson(personId)"
+EditPersonController --> PersonModel : "updatePerson(personData)"
+AsociateCategoryController --> CategoryModel : "getCategory()"
+....
+
+===== DeletePerson
 [plantuml, deletePersonAnalisis, svg]
 ....
 left to right direction
@@ -917,4 +976,381 @@ DeletePersonView --> ReadPersonController
 DeletePersonView --> DeletePersonController
 ReadPersonController --> PersonModel
 DeletePersonController --> PersonModel
+....
+
+[plantuml, deletePersonAnalisisCollaboration, svg]
+....
+left to right direction
+
+class Writer as ":Writer"
+class DeletePersonView as ":DeletePersonView"
+class ReadPersonController as ":ReadPersonController"
+class DeletePersonController as ":DeletePersonController"
+class PersonModel as ":PersonModel"
+
+Writer --> DeletePersonView : "deletePerson(personId)"
+DeletePersonView --> ReadPersonController : "getPerson(personId)"
+DeletePersonView --> DeletePersonController : "deletePerson(personId)"
+ReadPersonController --> PersonModel : "getPerson(personId)"
+DeletePersonController --> PersonModel : "deletePerson(personId)"
+....
+
+==== Product
+===== CreateProduct
+[plantuml, createProductAnalisis, svg]
+....
+left to right direction
+actor Writer
+boundary CreateProductView
+control CreateProductController
+control EditProductController
+control AsociateCategoryController
+control AsociatePersonController
+control AsociateEntityController
+entity CategoryModel
+entity ProductModel
+entity EntityModel
+entity PersonModel
+
+Writer --> CreateProductView
+CreateProductView --> CreateProductController
+CreateProductController --> EditProductController
+EditProductController --> AsociateCategoryController
+EditProductController --> AsociatePersonController
+EditProductController --> AsociateEntityController
+EditProductController --> ProductModel
+AsociateCategoryController --> CategoryModel
+AsociatePersonController --> PersonModel
+AsociateEntityController --> EntityModel
+....
+
+[plantuml, createProductAnalisisCollaboration, svg]
+....
+left to right direction
+class Writer as ":Writer"
+class CreateProductView as ":CreateProductView"
+class CreateProductController as ":CreateProductController"
+class EditProductController as ":EditProductController"
+class AsociateCategoryController as ":AsociateCategoryController"
+class AsociatePersonController as ":AsociatePersonController"
+class AsociateEntityController as ":AsociateEntityController"
+class CategoryModel as ":CategoryModel"
+class ProductModel as ":ProductModel"
+class EntityModel as ":EntityModel"
+class PersonModel as ":PersonModel"
+
+Writer --> CreateProductView : "createProduct() \n setProductData(productData)"
+CreateProductView --> CreateProductController : "createProduct(productData)"
+CreateProductController --> EditProductController : "createProduct(productData)"
+EditProductController --> AsociateCategoryController : "getCategory()"
+EditProductController --> AsociatePersonController : "getProduct()"
+EditProductController --> AsociateEntityController : "getEntity()"
+EditProductController --> ProductModel : "createProduct(productData)"
+AsociateCategoryController --> CategoryModel : "getCategory()"
+AsociatePersonController --> PersonModel : "getPerson()"
+AsociateEntityController --> EntityModel : "getEntity()"
+....
+
+===== updateProduct
+[plantuml, updateProductAnalisis, svg]
+....
+left to right direction
+
+actor Writer
+boundary UpdateProductView
+control UpdateProductController
+control EditProductController
+control AsociateCategoryController
+control AsociatePersonController
+control AsociateEntityController
+control ReadProductController
+entity CategoryModel
+entity ProductModel
+entity EntityModel
+entity PersonModel
+
+Writer --> UpdateProductView
+UpdateProductView --> UpdateProductController
+UpdateProductController --> EditProductController
+UpdateProductController --> ReadProductController
+EditProductController --> AsociateCategoryController
+EditProductController --> AsociatePersonController
+EditProductController --> AsociateEntityController
+EditProductController --> ProductModel
+AsociateCategoryController --> CategoryModel
+AsociatePersonController --> PersonModel
+AsociateEntityController --> EntityModel
+ReadProductController --> ProductModel
+....
+
+[plantuml, updateProductAnalisisCollaboration, svg]
+....
+left to right direction
+
+class Writer as ":Writer"
+class UpdateProductView as ":UpdateProductView"
+class UpdateProductController as ":UpdateProductController"
+class EditProductController as ":EditProductController"
+class AsociateCategoryController as ":AsociateCategoryController"
+class AsociatePersonController as ":AsociatePersonController"
+class AsociateEntityController as ":AsociateEntityController"
+class ReadProductController as ":ReadProductController"
+class CategoryModel as ":CategoryModel"
+class ProductModel as ":ProductModel"
+class EntityModel as ":EntityModel"
+class PersonModel as ":PersonModel"
+
+Writer --> UpdateProductView : "updateProduct() \n setProductData(productData)"
+UpdateProductView --> UpdateProductController : "updateProduct(productData)"
+UpdateProductController --> EditProductController : "updateProduct(productData)"
+UpdateProductController --> ReadProductController : "getProduct(productId)"
+EditProductController --> AsociateCategoryController : "getCategory()"
+EditProductController --> AsociatePersonController : "getPerson()"
+EditProductController --> AsociateEntityController : "getEntity()"
+EditProductController --> ProductModel : "updateProduct(productData)"
+AsociateCategoryController --> CategoryModel : "getCategory()"
+AsociatePersonController --> PersonModel : "getPerson()"
+AsociateEntityController --> EntityModel : "getEntity()"
+ReadProductController --> ProductModel : "getProduct(productId)"
+....
+
+===== DeleteProduct
+[plantuml, deleteProductAnalisis, svg]
+....
+left to right direction
+
+actor Writer
+boundary DeleteProductView
+control ReadProductController
+control DeleteProductController
+entity PersonModel
+
+Writer --> DeleteProductView
+DeleteProductView --> ReadProductController
+DeleteProductView --> DeleteProductController
+ReadProductController --> PersonModel
+DeleteProductController --> PersonModel
+....
+
+[plantuml, deleteProductAnalisisCollaboration, svg]
+....
+left to right direction
+
+class Writer as ":Writer"
+class DeleteProductView as ":DeleteProductView"
+class ReadProductController as ":ReadProductController"
+class DeleteProductController as ":DeleteProductController"
+class PersonModel as ":PersonModel"
+
+Writer --> DeleteProductView : "deleteProduct(productId)"
+DeleteProductView --> ReadProductController : "getProduct(productId)"
+DeleteProductView --> DeleteProductController : "deleteProduct(productId)"
+ReadProductController --> PersonModel : "getProduct(productId)"
+DeleteProductController --> PersonModel : "deleteProduct(productId)"
+....
+
+==== Entity
+===== CreateEntity
+
+[plantuml, createEntityAnalisis, svg]
+....
+left to right direction
+
+actor Writer
+boundary CreateEntityView
+control CreateEntityController
+control AsociateCategoryController
+control AsociatePersonController
+entity CategoryModel
+entity PersonModel
+entity EntityModel
+
+
+Writer --> CreateEntityView
+CreateEntityView --> CreateEntityController
+CreateEntityController --> EditEntityController
+EditEntityController --> AsociateCategoryController
+EditEntityController --> AsociatePersonController
+EditEntityController --> EntityModel
+AsociateCategoryController --> CategoryModel
+AsociatePersonController --> PersonModel
+....
+
+[plantuml, createEntityAnalisisCollaboration, svg]
+....
+left to right direction
+
+class Writer as ":Writer"
+class CreateEntityView as ":CreateEntityView"
+class CreateEntityController as ":CreateEntityController"
+class AsociateCategoryController as ":AsociateCategoryController"
+class AsociatePersonController as ":AsociatePersonController"
+class CategoryModel as ":CategoryModel"
+class PersonModel as ":PersonModel"
+class EntityModel as ":EntityModel"
+
+
+Writer --> CreateEntityView : "createEntity() \n setEntityData(entityData)"
+CreateEntityView --> CreateEntityController : "createEntity(entityData)"
+CreateEntityController --> EditEntityController : "createEntity(entityData)"
+EditEntityController --> AsociateCategoryController : "getCategory()"
+EditEntityController --> AsociatePersonController : "getperson()"
+EditEntityController --> EntityModel : "createEntity(entityData)"
+AsociateCategoryController --> CategoryModel : "getCategory()"
+AsociatePersonController --> PersonModel : "getPerson()"
+....
+
+===== UpdateEntity
+
+[plantuml, updateEntityAnalisis, svg]
+....
+left to right direction
+
+actor Writer
+boundary UpdateEntityView
+control UpdateEntityController
+control ReadEntityController
+control AsociateCategoryController
+control AsociatePersonController
+entity CategoryModel
+entity PersonModel
+entity EntityModel
+
+Writer --> UpdateEntityView
+UpdateEntityView --> UpdateEntityController
+UpdateEntityController --> EditEntityController
+EditEntityController --> AsociateCategoryController
+EditEntityController --> AsociatePersonController
+UpdateEntityController --> ReadEntityController
+EditEntityController --> EntityModel
+UpdateEntityController --> EntityModel
+AsociateCategoryController --> CategoryModel
+AsociatePersonController --> PersonModel
+ReadEntityController --> EntityModel
+....
+
+[plantuml, updateEntityAnalisisCollaboration, svg]
+....
+left to right direction
+
+class Writer as ":Writer"
+class UpdateEntityView as ":UpdateEntityView"
+class UpdateEntityController as ":UpdateEntityController"
+class ReadEntityController as ":ReadEntityController"
+class AsociateCategoryController as ":AsociateCategoryController"
+class AsociatePersonController as ":AsociatePersonController"
+class CategoryModel as ":CategoryModel"
+class CategoryModel as ":CategoryModel"
+class EntityModel as ":EntityModel"
+
+Writer --> UpdateEntityView : "updateEntity() \n setEntityData(entityData)"
+UpdateEntityView --> UpdateEntityController : "updateEntity(entityData)"
+UpdateEntityController --> EditEntityController : "updateEntity(entityData)"
+EditEntityController --> AsociateCategoryController : "getCategory()"
+EditEntityController --> AsociatePersonController : "getPerson()"
+UpdateEntityController --> ReadEntityController : "getEntity()"
+EditEntityController --> EntityModel : "updateEntity(entityData)"
+AsociateCategoryController --> CategoryModel : "getCategory()"
+AsociatePersonController --> PersonModel : "getPerson()"
+ReadEntityController --> EntityModel : "getEntity"
+....
+
+===== DeleteEntity
+[plantuml, deleteEntityAnalisis, svg]
+....
+left to right direction
+
+actor Writer
+boundary DeleteEntityView
+control ReadEntityController
+control DeleteEntityController
+entity EntityModel
+
+Writer --> DeleteEntityView
+DeleteEntityView --> ReadEntityController
+DeleteEntityView --> DeleteEntityController
+ReadEntityController --> EntityModel
+DeleteEntityController --> EntityModel
+....
+
+[plantuml, deleteEntityAnalisisCollaboration, svg]
+....
+left to right direction
+
+class Writer as ":Writer"
+class DeleteEntityView as ":DeleteEntityView"
+class ReadEntityController as ":ReadEntityController"
+class DeleteEntityController as ":DeleteEntityController"
+class EntityModel as ":EntityModel"
+
+Writer --> DeleteEntityView : "deleteEntity(entityId)"
+DeleteEntityView --> ReadEntityController : "getEntity(entityId)"
+DeleteEntityView --> DeleteEntityController : "deleteEntity(entityId)"
+ReadEntityController --> EntityModel : "getEntity(entityId)"
+DeleteEntityController --> EntityModel : "deleteEntity(entityId)"
+....
+
+==== Category
+===== CreateCategory
+[plantuml, createCategoryAnalisis, svg]
+....
+left to right direction
+
+actor Writter
+boundary CreateCategoryView
+control CreateCategoryController
+entity CategoryModel
+
+Writter --> CreateCategoryView
+CreateCategoryView --> CreateCategoryController
+CreateCategoryController --> CategoryModel
+....
+
+[plantuml, createCategoryAnalisisCollaboration, svg]
+....
+left to right direction
+
+class Writter as ":Writer"
+class CreateCategoryView as ":CreateCategoryView"
+class CreateCategoryController as ":CreateCategoryController"
+class CategoryModel as ":CategoryModel"
+
+Writter --> CreateCategoryView : "createCagegory() \n setCategoryData(categoryData)"
+CreateCategoryView --> CreateCategoryController : "createCategory(categoryData)"
+CreateCategoryController --> CategoryModel : "createCategory(categoryData)"
+....
+
+===== DeleteCategory
+[plantuml, deleteCategoryAnalisis, svg]
+....
+left to right direction
+
+actor Writer
+boundary DeleteCategoryView
+control DeleteCategoryController
+control ReadCategoryController
+entity CategoryModel
+
+Writer --> DeleteCategoryView
+DeleteCategoryView --> DeleteCategoryController
+DeleteCategoryView --> ReadCategoryController
+ReadCategoryController --> CategoryModel
+DeleteCategoryController --> CategoryModel
+....
+
+[plantuml, deleteCategoryAnalisisCollaboration, svg]
+....
+left to right direction
+
+class Writer as ":Writer"
+class DeleteCategoryView as ":DeleteCategoryView"
+class DeleteCategoryController as ":DeleteCategoryController"
+class ReadCategoryController as ":ReadCategoryController"
+class CategoryModel as ":CategoryModel"
+
+Writer --> DeleteCategoryView : "deleteCategory(categoryId)"
+DeleteCategoryView --> DeleteCategoryController : "deleteCategory(categoryId)"
+DeleteCategoryView --> ReadCategoryController : "getCategory(categoryId)"
+ReadCategoryController --> CategoryModel : "getCategory(categoryId)"
+DeleteCategoryController --> CategoryModel : "deleteCategory(categoryId)"
 ....
