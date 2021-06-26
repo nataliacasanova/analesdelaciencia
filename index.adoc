@@ -131,16 +131,23 @@ Writer --> deleteCategory
 
 
 
-createEntity ..> editPerson : <<include>>
-createPerson ..> editEntity : <<include>>
+createEntity ..> editEntity : <<include>>
+createPerson ..> editPerson : <<include>>
 createProduct ..> editProduct : <<include>>
-updateEntity ..> editPerson : <<include>>
-updatePerson ..> editEntity : <<include>>
+updateEntity ..> editEntity : <<include>>
+updatePerson ..> editPerson : <<include>>
 updateProduct ..> editProduct : <<include>>
-editEntity <.. asociateEntity: <<extends>>
-editPerson <.. asociatePerson: <<extends>>
+editEntity <.. asociatePerson: <<extends>>
+editEntity <.. asociateCategory: <<extends>>
+
+editProduct <.. asociatePerson: <<extends>>
+editProduct <.. asociateEntity: <<extends>>
+
+
+editPerson <.. asociateCategory: <<extends>>
+
 editProduct <.. asociateProduct: <<extends>>
-createCategory ..> asociateCategory: <<include>>
+editProduct <.. asociateCategory: <<extends>>
 
 editPerson ..> readIndex : <<include>>
 editEntity ..> readIndex : <<include>>
@@ -748,6 +755,8 @@ PersonModel --> "*" CategoryModel
 CategoryModel --> "*" CategoryModel
 
 package "controller"{
+Class loginController
+Class registerController
 
 Class readEntityController
 Class readPersonController
@@ -782,9 +791,9 @@ Class EntityView
 Class PersonView
 Class ProductView
 Class CategoryView
-Class EditEntityView
-Class EditProductView
-Class EditPersonView
+Class UpdateEntityView
+Class UpdateProductView
+Class UpdatePersonView
 Class DetailPersonView
 Class DetailEntityView
 Class DetailProductView
@@ -794,4 +803,118 @@ Class CreateProductView
 Class CreateCategoryView
 }
 
+....
+
+=== Analisis de caso de uso
+==== Login
+[plantuml, loginAnalisis, svg]
+....
+left to right direction
+
+actor User
+boundary LoginView
+control LoginController
+entity UserModel
+
+User --> LoginView
+LoginView --> LoginController
+LoginController --> UserModel
+....
+
+==== logout
+???
+
+==== Register
+[plantuml, registerAnalisis, svg]
+....
+left to right direction
+
+actor User
+boundary RegisterView
+control RegisterController
+entity UserModel
+
+User --> RegisterView
+RegisterView --> RegisterController
+RegisterController --> UserModel
+....
+
+==== Person
+===== CreatePerson
+[plantuml, createPersonAnalisis, svg]
+....
+left to right direction
+
+actor Writer
+boundary CreatePersonView
+control CreatePersonController
+control EditPersonController
+control AsociateCategoryController
+entity PersonModel
+entity CategoryModel
+
+Writer --> CreatePersonView
+CreatePersonView --> CreatePersonController
+CreatePersonController --> EditPersonController
+EditPersonController --> AsociateCategoryController
+EditPersonController --> PersonModel
+CreatePersonController --> PersonModel
+AsociateCategoryController --> CategoryModel
+....
+
+===== EditPerson
+[plantuml, editPersonAnalisis, svg]
+....
+left to right direction
+
+actor Writer
+boundary EditPersonView
+control EditPersonController
+control AsociateCategoryController
+entity PersonModel
+entity CategoryModel
+
+Writer --> EditPersonView
+EditPersonView --> EditPersonController
+EditPersonController --> AsociateCategoryController
+EditPersonController --> PersonModel
+AsociateCategoryController --> CategoryModel
+....
+
+===== UpdatePerson
+[plantuml, updatePersonAnalisis, svg]
+....
+left to right direction
+
+actor Writer
+boundary UpdatePersonView
+control ReadPersonController
+control UpdatePersonController
+control EditPersonController
+entity PersonModel
+
+Writer --> UpdatePersonView
+UpdatePersonView --> ReadPersonController
+UpdatePersonView --> UpdatePersonController
+UpdatePersonController --> EditPersonController
+ReadPersonController --> PersonModel
+EditPersonController --> PersonModel
+....
+
+===== DeletePersonView
+[plantuml, deletePersonAnalisis, svg]
+....
+left to right direction
+
+actor Writer
+boundary DeletePersonView
+control ReadPersonController
+control DeletePersonController
+entity PersonModel
+
+Writer --> DeletePersonView
+DeletePersonView --> ReadPersonController
+DeletePersonView --> DeletePersonController
+ReadPersonController --> PersonModel
+DeletePersonController --> PersonModel
 ....
